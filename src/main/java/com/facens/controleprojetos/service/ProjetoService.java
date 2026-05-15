@@ -1,6 +1,8 @@
 package com.facens.controleprojetos.service;
 
 import com.facens.controleprojetos.dto.response.ProjetoResponse;
+import com.facens.controleprojetos.dto.response.FuncionarioResumoResponse;
+import com.facens.controleprojetos.dto.response.ProjetoComFuncionariosResponse;
 import com.facens.controleprojetos.entity.Funcionario;
 import com.facens.controleprojetos.entity.Projeto;
 import com.facens.controleprojetos.repository.FuncionarioRepository;
@@ -40,6 +42,18 @@ public class ProjetoService {
                         new RuntimeException("Projeto não encontrado"));
 
         return mapperProjetoResponse(projeto);
+    }
+
+    public ProjetoComFuncionariosResponse buscarProjetoComFuncionarios(
+            Integer id
+    ) {
+
+        Projeto projeto = projetoRepository
+                .buscarProjetoComFuncionarios(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Projeto nÃ£o encontrado"));
+
+        return mapperProjetoComFuncionariosResponse(projeto);
     }
 
     public List<ProjetoResponse> buscarProjetosPorPeriodo(
@@ -92,6 +106,23 @@ public class ProjetoService {
                 projeto.getDescricao(),
                 projeto.getDataInicio(),
                 projeto.getDataFim()
+        );
+    }
+
+    private ProjetoComFuncionariosResponse mapperProjetoComFuncionariosResponse(
+            Projeto projeto
+    ) {
+
+        return new ProjetoComFuncionariosResponse(
+                projeto.getDescricao(),
+                projeto.getDataInicio(),
+                projeto.getDataFim(),
+                projeto.getFuncionarios()
+                        .stream()
+                        .map(funcionario -> new FuncionarioResumoResponse(
+                                funcionario.getNome()
+                        ))
+                        .toList()
         );
     }
 }

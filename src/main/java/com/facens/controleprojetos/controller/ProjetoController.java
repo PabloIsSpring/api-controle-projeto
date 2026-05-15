@@ -1,5 +1,6 @@
 package com.facens.controleprojetos.controller;
 
+import com.facens.controleprojetos.dto.response.ProjetoComFuncionariosResponse;
 import com.facens.controleprojetos.dto.response.ProjetoResponse;
 import com.facens.controleprojetos.entity.Projeto;
 import com.facens.controleprojetos.service.ProjetoService;
@@ -26,6 +27,13 @@ public class ProjetoController {
     @GetMapping("/{id}")
     public ProjetoResponse buscarProjetoPorId(@PathVariable Integer id) {
         return projetoService.buscarProjetoPorId(id);
+    }
+
+    @GetMapping("/{id}/funcionarios")
+    public ProjetoComFuncionariosResponse buscarProjetoComFuncionarios(
+            @PathVariable Integer id
+    ) {
+        return projetoService.buscarProjetoComFuncionarios(id);
     }
 
     @GetMapping("/periodo")
